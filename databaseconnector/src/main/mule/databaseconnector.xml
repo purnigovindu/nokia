@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="bc998238-9d10-481a-b068-04364a44de9b" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="foreachFlow" doc:id="22c3eea3-959f-406d-9504-84a7b0a471cc" >
+		<http:listener doc:name="Listener" doc:id="97088afc-9d35-42e6-914a-58b5a91e5894" config-ref="HTTP_Listener_config" path="database" />
+		<logger level="INFO" doc:name="Logger" doc:id="23abe04e-ce01-4963-8d80-60df048a9ca2" message="start" />
+		<ee:transform doc:name="Transform Message" doc:id="f35b9d54-5511-4edf-b7e8-e970b3b9e9d9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+1 to 10 map
+{ 
+   id: 200 + $$,
+   employee_name: "DorisWilder",
+   employee_salary: 85600,
+   employee_age: 23,
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message1" doc:id="c90156ee-73c3-4057-bd90-b91e0d1a4dd1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="1715f21d-63e6-47c1-bc6b-e716da8fc2c4" >
+			<logger level="INFO" doc:name="Logger" doc:id="8062a67e-cc30-47e1-b5aa-5b93d83ddbf4" message="payload" />
+			<db:insert doc:id="fc958934-2f71-4f99-b9ce-bb46fe99d638" doc:name="Insert" />
+		</foreach>
+		<logger level="INFO" doc:name="end" doc:id="5a24d68e-2980-4f7c-b50a-b8691d77d104" message="end" />
+	</flow>
+</mule>
