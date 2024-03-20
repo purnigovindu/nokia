@@ -38,6 +38,7 @@ payload]]></ee:set-payload>
 			<logger level="INFO" doc:name="Logger" doc:id="8062a67e-cc30-47e1-b5aa-5b93d83ddbf4" message="payload" />
 			<db:insert doc:id="fc958934-2f71-4f99-b9ce-bb46fe99d638" doc:name="Insert" />
 		</foreach>
+		<logger level="INFO" doc:name="Logger" doc:id="2239f890-f636-4290-a0b0-29cb3fc2995a" message="#[payload]"/>
 		<logger level="INFO" doc:name="end" doc:id="5a24d68e-2980-4f7c-b50a-b8691d77d104" message="end" />
 	</flow>
 </mule>
